@@ -1,4 +1,5 @@
 
+import 'package:expense_tracker/inputdata.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -53,12 +54,12 @@ class _ExpenseeState extends State<Expensee> {
                 borderRadius: BorderRadius.circular(7.0),
                 side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -93,7 +94,7 @@ class _ExpenseeState extends State<Expensee> {
                       ), //bank label
                     ],
                   ), //label
-                  const Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -128,7 +129,7 @@ class _ExpenseeState extends State<Expensee> {
                       ), //bank amount
                     ],
                   ),
-                  const Expanded(
+                  Expanded(
                     flex: 1,
                     child: SizedBox(
                       height: 16,
@@ -136,31 +137,8 @@ class _ExpenseeState extends State<Expensee> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: MaterialButton(
-                      color: const Color(0xff00adb5),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(45.0),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      textColor: const Color(0xffeeeeee),
-                      height: 60,
-                      minWidth: 60,
-                      onPressed: () {
-                        setState(() {
-
-                        });
-                      },
-                      child: const Text(
-                        "+",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                    ),
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: InputAmounts(),
                   ), // + icon
                 ],
               ),
