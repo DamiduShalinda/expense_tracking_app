@@ -30,43 +30,45 @@ class _InputAmountsState extends State<InputAmounts> {
           maxWidth: 100,
           child: AlertDialog(
             title: const Text('Add amount'),
-            content: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: RadioListTile(
-                        title: const Text("Cash"),
-                        value: "Cash",
-                        groupValue: moneyType,
-                        onChanged: (value) {
-                          setState(() {
-                            moneyType = value;
-                          });
-                        },
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: RadioListTile(
+                          title: const Text("Cash"),
+                          value: "Cash",
+                          groupValue: moneyType,
+                          onChanged: (value) {
+                            setState(() {
+                              moneyType = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: RadioListTile(
-                        title: const Text("Bank Account"),
-                        value: "Bank",
-                        groupValue: moneyType,
-                        onChanged: (value) {
-                          setState(() {
-                            moneyType = value;
-                          });
-                        },
+                      Expanded(
+                        child: RadioListTile(
+                          title: const Text("Bank Account"),
+                          value: "Bank",
+                          groupValue: moneyType,
+                          onChanged: (value) {
+                            setState(() {
+                              moneyType = value;
+                            });
+                          },
+                        ),
                       ),
+                    ],
+                  ), // radio buttons
+                  const TextField(
+                    decoration: InputDecoration(
+                      hintText: "Enter Amount",
+                      isDense: true,
                     ),
-                  ],
-                ), // radio buttons
-                const TextField(
-                  decoration: InputDecoration(
-                    hintText: "Enter Amount",
-                    isDense: true,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             actions: <Widget>[
               TextButton(
