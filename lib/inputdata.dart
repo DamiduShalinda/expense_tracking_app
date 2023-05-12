@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class InputAmounts extends StatefulWidget {
@@ -9,8 +10,16 @@ class InputAmounts extends StatefulWidget {
 
 class _InputAmountsState extends State<InputAmounts> {
 
-  String? moneyType;
-  double? amount;
+  final myController = TextEditingController();
+  String? moneyType = "cash";
+  double? cashAmount , bankAmount;
+
+  @override
+  void dispose() {
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
@@ -42,7 +51,7 @@ class _InputAmountsState extends State<InputAmounts> {
                           groupValue: moneyType,
                           onChanged: (value) {
                             setState(() {
-                              moneyType = value;
+                              moneyType = "cash";
                             });
                           },
                         ),
@@ -54,15 +63,16 @@ class _InputAmountsState extends State<InputAmounts> {
                           groupValue: moneyType,
                           onChanged: (value) {
                             setState(() {
-                              moneyType = value;
+                              moneyType = "bank";
                             });
                           },
                         ),
                       ),
                     ],
                   ), // radio buttons
-                  const TextField(
-                    decoration: InputDecoration(
+                   TextField(
+                    controller: myController,
+                    decoration: const InputDecoration(
                       hintText: "Enter Amount",
                       isDense: true,
                     ),
@@ -76,7 +86,10 @@ class _InputAmountsState extends State<InputAmounts> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
+                onPressed: () {
+                  addingAmount();
+                  Navigator.pop(context, 'OK');
+                },
                 child: const Text('ADD'),
               ),
             ],
@@ -92,6 +105,22 @@ class _InputAmountsState extends State<InputAmounts> {
         ),
       ),
     );
+  }
+
+  void addingAmount () {
+    if ( moneyType == "cash"){
+        cashAmount = double.parse(myController.text);
+        if (kDebugMode) {
+          print(cashAmount);
+        }
+    } else if(moneyType == "bank") {
+        bankAmount = double.parse(myController.text);
+        if (kDebugMode) {
+          print(bankAmount);
+        }
+    } else {
+      Navigator.pop(context , 'cancel');
+    }
   }
 }
 
