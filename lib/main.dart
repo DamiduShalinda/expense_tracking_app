@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,6 +13,9 @@ class Expensee extends StatefulWidget {
 }
 
 class _ExpenseeState extends State<Expensee> {
+
+  late double cashAmount, bankAmount;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,7 +76,7 @@ class _ExpenseeState extends State<Expensee> {
                             color: Color(0xff000000),
                           ),
                         ),
-                      ),
+                      ), //cash label
                       Padding(
                         padding: EdgeInsets.all(7),
                         child: Text(
@@ -86,9 +90,9 @@ class _ExpenseeState extends State<Expensee> {
                             color: Color(0xff000000),
                           ),
                         ),
-                      ),
+                      ), //bank label
                     ],
-                  ),
+                  ), //label
                   const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -107,7 +111,7 @@ class _ExpenseeState extends State<Expensee> {
                             color: Color(0xff000000),
                           ),
                         ),
-                      ),
+                      ), //cash amount
                       Padding(
                         padding: EdgeInsets.all(7),
                         child: Text(
@@ -121,7 +125,7 @@ class _ExpenseeState extends State<Expensee> {
                             color: Color(0xff000000),
                           ),
                         ),
-                      ),
+                      ), //bank amount
                     ],
                   ),
                   const Expanded(
@@ -134,7 +138,6 @@ class _ExpenseeState extends State<Expensee> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: MaterialButton(
-                      onPressed: () {},
                       color: const Color(0xff00adb5),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -144,6 +147,11 @@ class _ExpenseeState extends State<Expensee> {
                       textColor: const Color(0xffeeeeee),
                       height: 60,
                       minWidth: 60,
+                      onPressed: () {
+                        setState(() {
+
+                        });
+                      },
                       child: const Text(
                         "+",
                         style: TextStyle(
@@ -153,7 +161,7 @@ class _ExpenseeState extends State<Expensee> {
                         ),
                       ),
                     ),
-                  ),
+                  ), // + icon
                 ],
               ),
             ),
@@ -444,5 +452,3 @@ class _ExpenseeState extends State<Expensee> {
     );
   }
 }
-
-
