@@ -16,6 +16,13 @@ class Expensee extends StatefulWidget {
 class _ExpenseeState extends State<Expensee> {
 
   late double cashAmount, bankAmount;
+  String? dataFromChild;
+
+  void updateData(String newData) {
+    setState(() {
+      dataFromChild = newData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +61,12 @@ class _ExpenseeState extends State<Expensee> {
                 borderRadius: BorderRadius.circular(7.0),
                 side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
               ),
-              child: const Row(
+              child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -100,12 +107,12 @@ class _ExpenseeState extends State<Expensee> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(7),
+                        padding: const EdgeInsets.all(7),
                         child: Text(
-                          "Text",
+                          "$dataFromChild",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.clip,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
                             fontSize: 20,
@@ -113,7 +120,7 @@ class _ExpenseeState extends State<Expensee> {
                           ),
                         ),
                       ), //cash amount
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.all(7),
                         child: Text(
                           "Text",
@@ -129,16 +136,16 @@ class _ExpenseeState extends State<Expensee> {
                       ), //bank amount
                     ],
                   ),
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: SizedBox(
                       height: 16,
                       width: 16,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: InputAmounts(),
+                   Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: InputAmounts(callback: updateData),
                   ), // + icon
                 ],
               ),

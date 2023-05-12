@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class InputAmounts extends StatefulWidget {
-  const InputAmounts({Key? key}) : super(key: key);
+  const InputAmounts({Key? key, required this.callback}) : super(key: key);
+
+  final Function(String) callback;
 
   @override
   State<InputAmounts> createState() => _InputAmountsState();
@@ -19,6 +21,8 @@ class _InputAmountsState extends State<InputAmounts> {
     myController.dispose();
     super.dispose();
   }
+
+  late final Function(String) callback;
 
   @override
   Widget build(BuildContext context) {
@@ -110,14 +114,11 @@ class _InputAmountsState extends State<InputAmounts> {
   void addingAmount () {
     if ( moneyType == "cash"){
         cashAmount = double.parse(myController.text);
-        if (kDebugMode) {
-          print(cashAmount);
-        }
+        widget.callback(cashAmount.toString());
+
     } else if(moneyType == "bank") {
         bankAmount = double.parse(myController.text);
-        if (kDebugMode) {
-          print(bankAmount);
-        }
+
     } else {
       Navigator.pop(context , 'cancel');
     }
