@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class InputAmounts extends StatefulWidget {
   const InputAmounts({Key? key, required this.callback}) : super(key: key);
 
-  final Function(String) callback;
+  final Function(double , double ) callback;
 
   @override
   State<InputAmounts> createState() => _InputAmountsState();
@@ -14,7 +13,10 @@ class _InputAmountsState extends State<InputAmounts> {
 
   final myController = TextEditingController();
   String? moneyType = "cash";
-  double? cashAmount , bankAmount;
+  double cashAmount  = 0 ;
+  double bankAmount = 0;
+  late final Function(String) callback;
+
 
   @override
   void dispose() {
@@ -22,10 +24,35 @@ class _InputAmountsState extends State<InputAmounts> {
     super.dispose();
   }
 
-  late final Function(String) callback;
+  void clearText() {
+    myController.clear();
+  }
+
+  void addingAmount () {
+    if ( moneyType == "cash"){
+      cashAmount = double.parse(myController.text);
+      widget.callback(cashAmount , 0 );
+
+    } else if(moneyType == "bank") {
+      bankAmount = double.parse(myController.text);
+      widget.callback(0 , bankAmount);
+
+    } else {
+      Navigator.pop(context , 'cancel');
+    }
+  }
+
+  void setControllerValue() {
+    String enteredText = myController.text;
+    String defaultValue = "0";
+
+    myController.text = enteredText.isNotEmpty ? enteredText : defaultValue;
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
     return MaterialButton(
       color: const Color(0xff00adb5),
       elevation: 0,
@@ -75,6 +102,7 @@ class _InputAmountsState extends State<InputAmounts> {
                     ],
                   ), // radio buttons
                    TextField(
+                     keyboardType: TextInputType.number,
                     controller: myController,
                     decoration: const InputDecoration(
                       hintText: "Enter Amount",
@@ -91,8 +119,10 @@ class _InputAmountsState extends State<InputAmounts> {
               ),
               TextButton(
                 onPressed: () {
+                  setControllerValue();
                   addingAmount();
                   Navigator.pop(context, 'OK');
+                  clearText();
                 },
                 child: const Text('ADD'),
               ),
@@ -111,17 +141,5 @@ class _InputAmountsState extends State<InputAmounts> {
     );
   }
 
-  void addingAmount () {
-    if ( moneyType == "cash"){
-        cashAmount = double.parse(myController.text);
-        widget.callback(cashAmount.toString());
-
-    } else if(moneyType == "bank") {
-        bankAmount = double.parse(myController.text);
-
-    } else {
-      Navigator.pop(context , 'cancel');
-    }
-  }
 }
 

@@ -15,12 +15,13 @@ class Expensee extends StatefulWidget {
 
 class _ExpenseeState extends State<Expensee> {
 
-  late double cashAmount, bankAmount;
-  String? dataFromChild;
+  double cashAmount = 0;
+  double bankAmount = 0;
 
-  void updateData(String newData) {
+  void updateData(double cash , bank) {
     setState(() {
-      dataFromChild = newData;
+      cashAmount += cash;
+      bankAmount += bank;
     });
   }
 
@@ -109,7 +110,7 @@ class _ExpenseeState extends State<Expensee> {
                       Padding(
                         padding: const EdgeInsets.all(7),
                         child: Text(
-                          "$dataFromChild",
+                          "$cashAmount",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.clip,
                           style: const TextStyle(
@@ -120,13 +121,13 @@ class _ExpenseeState extends State<Expensee> {
                           ),
                         ),
                       ), //cash amount
-                      const Padding(
-                        padding: EdgeInsets.all(7),
+                       Padding(
+                        padding: const EdgeInsets.all(7),
                         child: Text(
-                          "Text",
+                          "$bankAmount",
                           textAlign: TextAlign.start,
                           overflow: TextOverflow.clip,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
                             fontSize: 20,
