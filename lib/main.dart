@@ -328,7 +328,9 @@ class _ExpenseeState extends State<Expensee> {
                     onPressed: () {
                       setControllerValue();
                       setListValues();
-                      addToString();
+                      setState(() {
+                        addToString();
+                      });
                     },
                     color: const Color(0xffeeeeee),
                     iconSize: 30,
@@ -337,19 +339,7 @@ class _ExpenseeState extends State<Expensee> {
                 ],
               ),
             ), // reason and amount input field
-           Card(
-             margin: const EdgeInsets.all(10),
-             color: const Color(0xffe0e0e0),
-             shadowColor: const Color(0xff000000),
-             elevation: 1,
-             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(7.0),
-               side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
-             ),
-             child: Column(
-               children: itemsListWidgets,
-             ),
-           )
+           Column(children: itemsListWidgets,)
           ],
         ),
 
