@@ -1,6 +1,5 @@
 
 import 'package:expense_tracker/inputdata.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:date_field/date_field.dart';
@@ -30,6 +29,7 @@ class _ExpenseeState extends State<Expensee> {
   final amountController = TextEditingController();
   String cDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
+  List<CashFlow> cashFlowTemp = [];
   List<CashFlow> cashFlow = [];
   late List<Widget> itemsListWidgets = [];
 
@@ -56,12 +56,18 @@ class _ExpenseeState extends State<Expensee> {
         spendAmount = double.parse(amountController.text);
         reason = reasonController.text;
         date = DateTime.parse(cDate);
+        cashFlowTemp.add(CashFlow(reason!, date, spendAmount!));
         cashFlow.add(CashFlow(reason!, date, spendAmount!));
+        reasonController.text = "";
+        amountController.text = "";
+        cashAmount -= spendAmount! ;
+
   }
+
 
   void addToString() {
 
-    for (CashFlow item in cashFlow) {
+    for (CashFlow item in cashFlowTemp) {
       itemsListWidgets.add(
         Row(
           children: [
@@ -70,7 +76,7 @@ class _ExpenseeState extends State<Expensee> {
                 padding: const EdgeInsets.fromLTRB(5, 5, 5, 7),
                 child: Text(
                   item.reason,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   overflow: TextOverflow.clip,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
@@ -101,6 +107,7 @@ class _ExpenseeState extends State<Expensee> {
         )
       );
     }
+    cashFlowTemp.clear();
 
   } // adding amounts to list of widgets
 
@@ -108,6 +115,7 @@ class _ExpenseeState extends State<Expensee> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xff222831),
         appBar: AppBar(
           elevation: 4,
@@ -359,6 +367,7 @@ class _ExpenseeState extends State<Expensee> {
                       setState(() {
                         addToString();
                       });
+
                     },
                     color: const Color(0xffeeeeee),
                     iconSize: 30,
