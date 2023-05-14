@@ -1,6 +1,11 @@
 
 import 'package:expense_tracker/inputdata.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:date_field/date_field.dart';
+import 'package:expense_tracker/cashflow.dart';
+
 
 void main() {
   runApp(const Expensee());
@@ -17,13 +22,42 @@ class _ExpenseeState extends State<Expensee> {
 
   double cashAmount = 0;
   double bankAmount = 0;
+  late double? spendAmount;
+  late String? reason;
+  late DateTime date;
 
-  void updateData(double cash , bank) {
+  final reasonController = TextEditingController();
+  final amountController = TextEditingController();
+  String cDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+  List<CashFlow> cashFlow = [];
+
+  void updateData(double cash, bank) {
     setState(() {
       cashAmount += cash;
       bankAmount += bank;
     });
   }
+
+  void setControllerValue() {
+    String enteredText = reasonController.text;
+    String amountEntered = amountController.text;
+    String reasonDefaultValue = "";
+    String amountDefaultValue = "0";
+    reasonController.text =
+    enteredText.isNotEmpty ? enteredText : reasonDefaultValue;
+    amountController.text =
+    amountEntered.isNotEmpty ? amountEntered : amountDefaultValue;
+  }
+
+  void setListValues() {
+        spendAmount = double.parse(amountController.text);
+        reason = reasonController.text;
+        date = DateTime.parse(cDate);
+        cashFlow.add(CashFlow(reason!, date, spendAmount!));
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +96,7 @@ class _ExpenseeState extends State<Expensee> {
                 borderRadius: BorderRadius.circular(7.0),
                 side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
               ),
-              child:  Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -121,7 +155,7 @@ class _ExpenseeState extends State<Expensee> {
                           ),
                         ),
                       ), //cash amount
-                       Padding(
+                      Padding(
                         padding: const EdgeInsets.all(7),
                         child: Text(
                           "$bankAmount",
@@ -144,13 +178,13 @@ class _ExpenseeState extends State<Expensee> {
                       width: 16,
                     ),
                   ),
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: InputAmounts(callback: updateData),
                   ), // + icon
                 ],
               ),
-            ),
+            ), // amount displaying card
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -161,44 +195,41 @@ class _ExpenseeState extends State<Expensee> {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: TextField(
-                        controller: TextEditingController(),
-                        obscureText: false,
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 20,
-                          color: Color(0xff000000),
-                        ),
-                        decoration: const InputDecoration(
-                          disabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          hintText: "Date",
-                          hintStyle: TextStyle(
+                        padding: const EdgeInsets.all(5),
+                        child: DateTimeFormField(
+                          dateTextStyle: const TextStyle(
                             fontWeight: FontWeight.w400,
                             fontStyle: FontStyle.normal,
                             fontSize: 20,
                             color: Color(0xff909090),
                           ),
-                          filled: true,
-                          fillColor: Color(0x00f2f2f3),
-                          isDense: true,
-                          contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        ),
-                      ),
-                    ),
+                          decoration: const InputDecoration(
+                            contentPadding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            disabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorStyle: TextStyle(color: Colors.redAccent),
+                            border: OutlineInputBorder(),
+                            suffixIcon: Icon(
+                              Icons.calendar_today_sharp,
+                              color: Color(0xffeeeeee),),
+                          ),
+                          mode: DateTimeFieldPickerMode.date,
+                          autovalidateMode: AutovalidateMode.always,
+                          validator: (e) =>
+                          (e?.day ?? 0) == 1
+                              ? 'Please not the first day'
+                              : null,
+                          onDateSelected: (DateTime value) {
+                            if (kDebugMode) {
+                              print(value);
+                            }
+                          },
+                        )
+                    ), // dateText
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () {},
-                    color: const Color(0xffeeeeee),
-                    iconSize: 24,
-                  ),
+
                 ],
               ),
             ), //Date input field
@@ -214,7 +245,7 @@ class _ExpenseeState extends State<Expensee> {
                     child: Padding(
                       padding: const EdgeInsets.all(5),
                       child: TextField(
-                        controller: TextEditingController(),
+                        controller: reasonController,
                         obscureText: false,
                         textAlign: TextAlign.start,
                         maxLines: 1,
@@ -222,7 +253,7 @@ class _ExpenseeState extends State<Expensee> {
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                           fontSize: 20,
-                          color: Color(0xff000000),
+                          color: Color(0xffffffff),
                         ),
                         decoration: const InputDecoration(
                           disabledBorder: InputBorder.none,
@@ -243,13 +274,14 @@ class _ExpenseeState extends State<Expensee> {
                         ),
                       ),
                     ),
-                  ),
+                  ), // reason text field
                   Expanded(
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(5),
                       child: TextField(
-                        controller: TextEditingController(),
+                        keyboardType: TextInputType.number,
+                        controller: amountController,
                         obscureText: false,
                         textAlign: TextAlign.start,
                         maxLines: 1,
@@ -278,13 +310,17 @@ class _ExpenseeState extends State<Expensee> {
                         ),
                       ),
                     ),
-                  ),
+                  ), // amount text field
                   IconButton(
                     icon: const Icon(Icons.done),
-                    onPressed: () {},
+                    onPressed: () {
+                      setControllerValue();
+                      setListValues();
+                    },
                     color: const Color(0xffeeeeee),
-                    iconSize: 24,
-                  ),
+                    iconSize: 30,
+                    padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                  ), // ok icon button
                 ],
               ),
             ), // reason and amount input field
@@ -297,26 +333,26 @@ class _ExpenseeState extends State<Expensee> {
                 borderRadius: BorderRadius.circular(7.0),
                 side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: Text(
-                      "2022-05-12 ",
+                      " $cDate",
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.clip,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                         fontSize: 20,
                         color: Color(0xff000000),
                       ),
                     ),
-                  ),
-                  Row(
+                  ), //title date text
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -438,3 +474,4 @@ class _ExpenseeState extends State<Expensee> {
     );
   }
 }
+  
