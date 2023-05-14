@@ -65,16 +65,44 @@ class _ExpenseeState extends State<Expensee> {
       itemsListWidgets.add(
         Row(
           children: [
-            Text("Reason : ${item.reason} "),
-            Text("Amount : ${item.amount.toString()} "),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(5, 5, 5, 7),
+                child: Text(
+                  item.reason,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.clip,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 20,
+                    color: Color(0xff000000),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(5, 5, 5, 7),
+                child: Text(
+                  item.amount.toString(),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.clip,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 20,
+                    color: Color(0xff000000),
+                  ),
+                ),
+              ),
+            ),
           ],
         )
       );
     }
 
-  }
-
-
+  } // adding amounts to list of widgets
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +367,73 @@ class _ExpenseeState extends State<Expensee> {
                 ],
               ),
             ), // reason and amount input field
-           Column(children: itemsListWidgets,)
+           Card(
+             margin: const EdgeInsets.all(10),
+             color: const Color(0xffe0e0e0),
+             shadowColor: const Color(0xff000000),
+             elevation: 1,
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(7.0),
+               side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
+             ),
+             child: Column(
+               children: [
+                 Padding(
+                   padding: const EdgeInsets.all(5),
+                   child: Text(
+                     " $cDate",
+                     textAlign: TextAlign.left,
+                     overflow: TextOverflow.clip,
+                     style: const TextStyle(
+                       fontWeight: FontWeight.w400,
+                       fontStyle: FontStyle.normal,
+                       fontSize: 20,
+                       color: Color(0xff000000),
+                     ),
+                   ),
+                 ),
+                 const Row(
+                   children: [
+                     Expanded(
+                       child: Padding(
+                         padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
+                         child: Text(
+                           "Reason",
+                           textAlign: TextAlign.center,
+                           overflow: TextOverflow.clip,
+                           style: TextStyle(
+                             fontWeight: FontWeight.w700,
+                             fontStyle: FontStyle.normal,
+                             fontSize: 16,
+                             color: Color(0xff000000),
+                           ),
+                         ),
+                       ),
+                     ),
+                     Expanded(
+                       child: Padding(
+                         padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
+                         child: Text(
+                           "Amount",
+                           textAlign: TextAlign.center,
+                           overflow: TextOverflow.clip,
+                           style: TextStyle(
+                             fontWeight: FontWeight.w700,
+                             fontStyle: FontStyle.normal,
+                             fontSize: 16,
+                             color: Color(0xff000000),
+                           ),
+                         ),
+                       ),
+                     ),
+                   ],
+                 ),
+                 Column(
+                   children: itemsListWidgets,
+                 ),
+               ],
+             ),
+           )
           ],
         ),
 
