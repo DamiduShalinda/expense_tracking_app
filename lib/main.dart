@@ -31,6 +31,7 @@ class _ExpenseeState extends State<Expensee> {
   String cDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
   List<CashFlow> cashFlow = [];
+  late List<Widget> itemsListWidgets = [];
 
   void updateData(double cash, bank) {
     setState(() {
@@ -50,13 +51,29 @@ class _ExpenseeState extends State<Expensee> {
     amountEntered.isNotEmpty ? amountEntered : amountDefaultValue;
   }
 
+
   void setListValues() {
         spendAmount = double.parse(amountController.text);
         reason = reasonController.text;
         date = DateTime.parse(cDate);
         cashFlow.add(CashFlow(reason!, date, spendAmount!));
+  }
+
+  void addToString() {
+
+    for (CashFlow item in cashFlow) {
+      itemsListWidgets.add(
+        Row(
+          children: [
+            Text("Reason : ${item.reason} "),
+            Text("Amount : ${item.amount.toString()} "),
+          ],
+        )
+      );
+    }
 
   }
+
 
 
   @override
@@ -221,11 +238,6 @@ class _ExpenseeState extends State<Expensee> {
                           (e?.day ?? 0) == 1
                               ? 'Please not the first day'
                               : null,
-                          onDateSelected: (DateTime value) {
-                            if (kDebugMode) {
-                              print(value);
-                            }
-                          },
                         )
                     ), // dateText
                   ),
@@ -316,6 +328,7 @@ class _ExpenseeState extends State<Expensee> {
                     onPressed: () {
                       setControllerValue();
                       setListValues();
+                      addToString();
                     },
                     color: const Color(0xffeeeeee),
                     iconSize: 30,
@@ -324,154 +337,25 @@ class _ExpenseeState extends State<Expensee> {
                 ],
               ),
             ), // reason and amount input field
-            Card(
-              margin: const EdgeInsets.all(10),
-              color: const Color(0xffe0e0e0),
-              shadowColor: const Color(0xff000000),
-              elevation: 1,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7.0),
-                side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(
-                      " $cDate",
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.clip,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 20,
-                        color: Color(0xff000000),
-                      ),
-                    ),
-                  ), //title date text
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
-                            child: Text(
-                              "Reason",
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              "Shopping",
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 20,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              "Dining",
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 20,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        color: Color(0xff808080),
-                        height: 16,
-                        thickness: 0,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
-                            child: Text(
-                              "Text",
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 10,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              "120,000",
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 20,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              "5,000",
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 20,
-                                color: Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ), //listing all expenses
+           Card(
+             margin: const EdgeInsets.all(10),
+             color: const Color(0xffe0e0e0),
+             shadowColor: const Color(0xff000000),
+             elevation: 1,
+             shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(7.0),
+               side: const BorderSide(color: Color(0x4d9e9e9e), width: 1),
+             ),
+             child: Column(
+               children: itemsListWidgets,
+             ),
+           )
           ],
         ),
 
       ),
     );
   }
+
 }
   

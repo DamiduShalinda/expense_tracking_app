@@ -103,6 +103,7 @@ class _InputAmountsState extends State<InputAmounts> {
                   ), // radio buttons
                    TextField(
                      keyboardType: TextInputType.number,
+                    autofocus: true,
                     controller: myController,
                     decoration: const InputDecoration(
                       hintText: "Enter Amount",
